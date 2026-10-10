@@ -303,7 +303,7 @@ $adminNavLinks = [
                 </div>
 
                 <!-- Right Action Bar (Standardized Across All Authenticated Pages) -->
-                <div class="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+                <div class="flex items-center gap-2 sm:gap-3 shrink-0">
                     <!-- Global Currency Switcher Selector -->
                     <?php 
                         $headerUserCurrency = get_user_currency();
@@ -346,11 +346,6 @@ $adminNavLinks = [
                         <span class="text-[11px] font-semibold text-slate-500 hidden md:inline">Balance:</span>
                         <span class="text-xs sm:text-sm font-extrabold text-blue-700 font-mono-nums"><?= format_currency($currentUser['balance'] ?? 0) ?></span>
                         <span class="w-6 h-6 rounded-xl bg-blue-600 text-white font-extrabold flex items-center justify-center text-xs shadow-xs group-hover:scale-105 transition-transform shrink-0">+</span>
-                    </a>
-
-                    <!-- Profile Avatar Circular Button with Link to /user/profile.php -->
-                    <a href="/user/profile.php" class="w-9 h-9 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 text-white flex items-center justify-center font-black text-xs border-2 border-white shadow-xs hover:ring-2 hover:ring-blue-200 transition-all shrink-0" title="User Profile (<?= e($currentUser['username'] ?? 'Account') ?>)">
-                        <?= strtoupper(substr($currentUser['username'] ?? 'U', 0, 1)) ?>
                     </a>
 
                     <!-- Logout Button (Clean, compact, accessible) -->
