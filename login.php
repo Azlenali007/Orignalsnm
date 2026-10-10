@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Auth::logout();
             $error = "The system is currently undergoing scheduled maintenance. Only administrators may log in.";
         } else {
+            $_SESSION['show_welcome_intro'] = true;
             set_flash('success', 'Welcome back!');
             $redirectUrl = Auth::isAdmin() ? '/admin/dashboard.php' : '/user/dashboard.php';
             redirect($redirectUrl);

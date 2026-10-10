@@ -114,6 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 session_regenerate_id(true);
                 $_SESSION['user_id'] = $newUserId;
                 $_SESSION['user_role'] = 'user';
+                $_SESSION['show_welcome_intro'] = true;
 
                 set_flash('success', 'Account created successfully! Welcome to ' . app_name() . '.');
                 redirect('/user/dashboard.php');

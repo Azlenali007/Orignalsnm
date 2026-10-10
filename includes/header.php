@@ -108,6 +108,7 @@ $adminNavLinks = [
     </style>
 </head>
 <body class="min-h-full font-sans text-slate-800 antialiased bg-[#f6f9fc] selection:bg-blue-600 selection:text-white">
+    <?php require_once __DIR__ . '/welcome_intro.php'; ?>
     <?php if ($isAdminPage): ?>
         <!-- Admin App Layout Container with Alpine.js Sidebar state -->
         <div x-data="{ sidebarOpen: false }" class="min-h-screen flex flex-col lg:flex-row bg-[#0f172a]/[0.02]">
