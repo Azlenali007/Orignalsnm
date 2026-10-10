@@ -334,21 +334,21 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
         </div>
 
-        <!-- Cards Grid Container -->
-        <div x-show="filteredServices.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- Cards Grid Container (1 col on mobile, 2 cols on sm, 3 cols on lg, 4 cols on xl) -->
+        <div x-show="filteredServices.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             <template x-for="item in filteredServices" :key="item.id">
-                <div class="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between group relative overflow-hidden">
+                <div class="service-card bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-xs hover:border-slate-300 flex flex-col justify-between group relative overflow-hidden">
                     <!-- Top Subtle Gradient Glow Line -->
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r" :class="item.bg_gradient"></div>
+                    <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r transition-all group-hover:h-1.5" :class="item.bg_gradient"></div>
 
                     <!-- Card Header: Category Badge & ID -->
                     <div>
                         <div class="flex items-start justify-between gap-2 mb-3">
-                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold border" :class="item.badge_bg">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold border transition-colors" :class="item.badge_bg">
                                 <span class="w-2 h-2 rounded-full bg-current"></span>
                                 <span class="truncate max-w-[130px]" x-text="item.platform_label"></span>
                             </span>
-                            <span class="font-mono text-[11px] font-bold text-slate-400 bg-slate-50 px-2.5 py-0.5 rounded-lg border border-slate-100" x-text="'#' + item.id"></span>
+                            <span class="font-mono text-[11px] font-bold text-slate-400 bg-slate-50 px-2 py-0.5 rounded-lg border border-slate-100" x-text="'#' + item.id"></span>
                         </div>
 
                         <!-- Service Title -->
@@ -357,17 +357,17 @@ require_once __DIR__ . '/../includes/header.php';
                         </h3>
                         <span class="text-[11px] font-medium text-slate-400 block mt-1 truncate" x-text="item.category_name"></span>
 
-                        <!-- Specs Grid (Min, Max, Speed, Guarantee) -->
+                        <!-- Specs Grid (Min, Max, Speed) -->
                         <div class="grid grid-cols-2 gap-2 mt-4 text-center">
-                            <div class="bg-slate-50/80 rounded-xl p-2 border border-slate-100">
+                            <div class="bg-slate-50/80 rounded-xl p-2 border border-slate-100 group-hover:bg-slate-50 transition-colors">
                                 <span class="text-[10px] text-slate-400 uppercase font-bold block">Min Order</span>
                                 <span class="text-xs font-black text-slate-800 font-mono-nums" x-text="item.min_formatted"></span>
                             </div>
-                            <div class="bg-slate-50/80 rounded-xl p-2 border border-slate-100">
+                            <div class="bg-slate-50/80 rounded-xl p-2 border border-slate-100 group-hover:bg-slate-50 transition-colors">
                                 <span class="text-[10px] text-slate-400 uppercase font-bold block">Max Order</span>
                                 <span class="text-xs font-black text-slate-800 font-mono-nums" x-text="item.max_formatted"></span>
                             </div>
-                            <div class="col-span-2 bg-slate-50/80 rounded-xl px-2.5 py-1.5 border border-slate-100 flex items-center justify-between text-xs">
+                            <div class="col-span-2 bg-slate-50/80 rounded-xl px-2.5 py-1.5 border border-slate-100 flex items-center justify-between text-xs group-hover:bg-slate-50 transition-colors">
                                 <span class="text-[10px] text-slate-400 uppercase font-bold">Speed</span>
                                 <span class="text-[11px] font-bold text-emerald-600 flex items-center gap-1 truncate">
                                     <span>⚡</span>
@@ -382,7 +382,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <div class="mt-2 pt-1 border-t border-slate-200/50 flex justify-end">
                                 <button type="button" 
                                         @click="openDetails(item)" 
-                                        class="text-[10px] font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 hover:underline">
+                                        class="text-[10px] font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1 hover:underline cursor-pointer">
                                     <span>View Full Details & Specs</span>
                                     <span>&rarr;</span>
                                 </button>
@@ -396,7 +396,7 @@ require_once __DIR__ . '/../includes/header.php';
                             <div>
                                 <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Price per 1K</span>
                                 <div class="flex items-baseline">
-                                    <span class="text-2xl font-black text-slate-900 tabular-nums" x-text="item.rate_formatted"></span>
+                                    <span class="text-xl sm:text-2xl font-black text-slate-900 tabular-nums" x-text="item.rate_formatted"></span>
                                     <span class="text-xs font-semibold text-slate-500 ml-1">/ 1K</span>
                                 </div>
                             </div>
@@ -410,7 +410,7 @@ require_once __DIR__ . '/../includes/header.php';
                         <div class="grid grid-cols-2 gap-2">
                             <button type="button" 
                                     @click="openDetails(item)" 
-                                    class="py-2.5 px-3 bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 font-extrabold text-xs rounded-xl transition-all flex items-center justify-center gap-1">
+                                    class="py-2.5 px-3 bg-slate-100 hover:bg-slate-200 active:scale-95 text-slate-700 font-extrabold text-xs rounded-xl transition-all flex items-center justify-center gap-1 cursor-pointer">
                                 <span>Details</span>
                             </button>
                             <a :href="item.order_url" 

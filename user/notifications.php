@@ -83,33 +83,39 @@ if (!in_array($filter, $validFilters, true)) {
     $filter = 'all';
 }
 
-// Fetch user notifications
-$sql = "
-    SELECT a.*, r.read_at,
-           CASE WHEN r.read_at IS NULL THEN 1 ELSE 0 END AS is_unread
-    FROM announcements a
-    LEFT JOIN user_notification_reads r ON a.id = r.announcement_id AND r.user_id = :uid
-    WHERE a.status = 'active'
-      AND (a.target_audience = 'all' OR a.target_user_id = :uid)
-      AND (a.starts_at IS NULL OR a.starts_at <= NOW())
-      AND (a.expires_at IS NULL OR a.expires_at >= NOW())
-";
+// Fetch user notifications safely
+$notifications = [];
+try {
+    $sql = "
+        SELECT a.*, r.read_at,
+               CASE WHEN r.read_at IS NULL THEN 1 ELSE 0 END AS is_unread
+        FROM announcements a
+        LEFT JOIN user_notification_reads r ON a.id = r.announcement_id AND r.user_id = :uid
+        WHERE a.status = 'active'
+          AND (a.target_audience = 'all' OR a.target_user_id = :uid)
+          AND (a.starts_at IS NULL OR a.starts_at <= NOW())
+          AND (a.expires_at IS NULL OR a.expires_at >= NOW())
+    ";
 
-if ($filter === 'unread') {
-    $sql .= " AND r.read_at IS NULL";
-} elseif ($filter !== 'all') {
-    $sql .= " AND a.type = :type";
+    if ($filter === 'unread') {
+        $sql .= " AND r.read_at IS NULL";
+    } elseif ($filter !== 'all') {
+        $sql .= " AND a.type = :type";
+    }
+
+    $sql .= " ORDER BY is_unread DESC, a.created_at DESC LIMIT 50";
+
+    $stmt = $db->prepare($sql);
+    $params = ['uid' => $user['id']];
+    if ($filter !== 'all' && $filter !== 'unread') {
+        $params['type'] = $filter;
+    }
+    $stmt->execute($params);
+    $notifications = $stmt->fetchAll() ?: [];
+} catch (\Throwable $e) {
+    error_log("Notification fetch error: " . $e->getMessage());
+    $notifications = [];
 }
-
-$sql .= " ORDER BY is_unread DESC, a.created_at DESC LIMIT 50";
-
-$stmt = $db->prepare($sql);
-$params = ['uid' => $user['id']];
-if ($filter !== 'all' && $filter !== 'unread') {
-    $params['type'] = $filter;
-}
-$stmt->execute($params);
-$notifications = $stmt->fetchAll();
 
 // Unread count
 $unreadCount = get_unread_notifications_count((int)$user['id']);
