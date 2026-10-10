@@ -6,8 +6,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     const chartCanvas = document.getElementById('adminOrdersChart');
     if (chartCanvas && typeof Chart !== 'undefined') {
-        const ctx = chartCanvas.getContext('2d');
-        new Chart(ctx, {
+        const isDark = document.documentElement.classList.contains('dark');
+        const chart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -29,13 +29,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 scales: {
                     y: {
                         beginAtZero: true,
-                        grid: { color: 'rgba(0, 0, 0, 0.05)' }
+                        grid: { color: isDark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.05)' },
+                        ticks: { color: isDark ? '#94a3b8' : '#64748b' }
                     },
                     x: {
-                        grid: { display: false }
+                        grid: { display: false },
+                        ticks: { color: isDark ? '#94a3b8' : '#64748b' }
                     }
                 }
             }
+        });
+
+        window.addEventListener('themechanged', (e) => {
+            const dark = e.detail && e.detail.isDark;
+            chart.options.scales.y.grid.color = dark ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.05)';
+            chart.options.scales.y.ticks.color = dark ? '#94a3b8' : '#64748b';
+            chart.options.scales.x.ticks.color = dark ? '#94a3b8' : '#64748b';
+            chart.update();
         });
     }
 

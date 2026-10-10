@@ -89,9 +89,13 @@ function cardCarousel(initialItems) {
 
         init() {
             this.checkMobile();
+            let resizeRaf = null;
             window.addEventListener('resize', () => {
-                this.checkMobile();
-            });
+                if (resizeRaf) cancelAnimationFrame(resizeRaf);
+                resizeRaf = requestAnimationFrame(() => {
+                    this.checkMobile();
+                });
+            }, { passive: true });
             window.addEventListener('keydown', (e) => {
                 if (e.key === 'ArrowLeft') this.prev();
                 if (e.key === 'ArrowRight') this.next();
@@ -141,7 +145,10 @@ function cardCarousel(initialItems) {
                     zIndex: '30',
                     filter: 'brightness(1)',
                     pointerEvents: 'auto',
-                    boxShadow: '0 25px 60px -15px rgba(59, 130, 246, 0.45)'
+                    boxShadow: '0 25px 60px -15px rgba(59, 130, 246, 0.45)',
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                    willChange: 'transform, opacity'
                 };
             }
             if (diff === -1) {
@@ -157,7 +164,10 @@ function cardCarousel(initialItems) {
                     filter: 'brightness(0.95)',
                     cursor: 'pointer',
                     pointerEvents: 'auto',
-                    boxShadow: '0 20px 45px -12px rgba(16, 185, 129, 0.35)'
+                    boxShadow: '0 20px 45px -12px rgba(16, 185, 129, 0.35)',
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                    willChange: 'transform, opacity'
                 };
             }
             if (diff === 1) {
@@ -173,7 +183,10 @@ function cardCarousel(initialItems) {
                     filter: 'brightness(0.95)',
                     cursor: 'pointer',
                     pointerEvents: 'auto',
-                    boxShadow: '0 20px 45px -12px rgba(245, 158, 11, 0.35)'
+                    boxShadow: '0 20px 45px -12px rgba(245, 158, 11, 0.35)',
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                    willChange: 'transform, opacity'
                 };
             }
             if (diff === -2) {
@@ -183,8 +196,11 @@ function cardCarousel(initialItems) {
                     transform: `translate3d(${tx}, 0, -110px) scale(0.72) rotateY(32deg)`,
                     opacity: '0.45',
                     zIndex: '10',
-                    filter: 'brightness(0.85) blur(0.5px)',
-                    pointerEvents: 'none'
+                    filter: 'brightness(0.85)',
+                    pointerEvents: 'none',
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                    willChange: 'transform, opacity'
                 };
             }
             if (diff === 2) {
@@ -194,8 +210,11 @@ function cardCarousel(initialItems) {
                     transform: `translate3d(${tx}, 0, -110px) scale(0.72) rotateY(-32deg)`,
                     opacity: '0.45',
                     zIndex: '10',
-                    filter: 'brightness(0.85) blur(0.5px)',
-                    pointerEvents: 'none'
+                    filter: 'brightness(0.85)',
+                    pointerEvents: 'none',
+                    backfaceVisibility: 'hidden',
+                    WebkitBackfaceVisibility: 'hidden',
+                    willChange: 'transform, opacity'
                 };
             }
             // Distant cards
@@ -203,7 +222,9 @@ function cardCarousel(initialItems) {
                 transform: 'translate3d(0, 0, -200px) scale(0.5)',
                 opacity: '0',
                 zIndex: '5',
-                pointerEvents: 'none'
+                pointerEvents: 'none',
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden'
             };
         },
 
@@ -296,7 +317,6 @@ function cardCarousel(initialItems) {
 
             // Only capture intentional horizontal swipes
             if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 12) {
-                if (e.cancelable) e.preventDefault();
                 this.dragMoved = true;
             }
         },

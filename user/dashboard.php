@@ -133,15 +133,15 @@ require_once __DIR__ . '/../includes/header.php';
 ?>
 
 <!-- Ambient Floating Pastel Petals / Soft Glows matching reference aesthetic -->
-<div class="fixed inset-0 pointer-events-none overflow-hidden -z-10 select-none">
-    <div class="absolute top-12 left-1/4 w-72 h-72 rounded-full bg-sky-200/25 blur-3xl"></div>
-    <div class="absolute top-36 right-1/4 w-80 h-80 rounded-full bg-blue-200/20 blur-3xl"></div>
-    <div class="absolute bottom-16 left-1/3 w-96 h-96 rounded-full bg-indigo-100/30 blur-3xl"></div>
+<div class="fixed inset-0 pointer-events-none overflow-hidden -z-10 select-none ambient-glow-layer">
+    <div class="absolute top-12 left-1/4 w-72 h-72 rounded-full bg-sky-200/25 dark:bg-sky-900/15 blur-3xl" style="contain: paint;"></div>
+    <div class="absolute top-36 right-1/4 w-80 h-80 rounded-full bg-blue-200/20 dark:bg-blue-900/15 blur-3xl" style="contain: paint;"></div>
+    <div class="absolute bottom-16 left-1/3 w-96 h-96 rounded-full bg-indigo-100/30 dark:bg-indigo-950/20 blur-3xl" style="contain: paint;"></div>
     <!-- Floating pastel leaf shapes from reference image -->
-    <div class="absolute top-28 right-[18%] text-emerald-400/40 transform rotate-45 scale-125">🍃</div>
-    <div class="absolute top-44 left-[14%] text-blue-300/30 transform -rotate-12 scale-110">✦</div>
-    <div class="absolute top-[340px] left-[26%] text-teal-400/35 transform rotate-12 scale-100">🍃</div>
-    <div class="absolute top-[360px] right-[24%] text-sky-400/30 transform 45 scale-90">✦</div>
+    <div class="absolute top-28 right-[18%] text-emerald-400/40 dark:text-emerald-500/20 transform rotate-45 scale-125">🍃</div>
+    <div class="absolute top-44 left-[14%] text-blue-300/30 dark:text-blue-500/20 transform -rotate-12 scale-110">✦</div>
+    <div class="absolute top-[340px] left-[26%] text-teal-400/35 dark:text-teal-500/20 transform rotate-12 scale-100">🍃</div>
+    <div class="absolute top-[360px] right-[24%] text-sky-400/30 dark:text-sky-500/20 transform 45 scale-90">✦</div>
 </div>
 
 <div class="max-w-5xl mx-auto space-y-6 sm:space-y-8 pb-12">
@@ -184,7 +184,7 @@ require_once __DIR__ . '/../includes/header.php';
     <div x-data="cardCarousel()" class="relative w-full overflow-hidden select-none py-4" style="perspective: 1200px; -webkit-perspective: 1200px;">
         <!-- 3D Stage Container -->
         <div class="relative w-full h-[290px] sm:h-[320px] md:h-[340px] flex items-center justify-center overflow-visible" 
-             style="transform-style: preserve-3d; -webkit-transform-style: preserve-3d;"
+             style="transform-style: preserve-3d; -webkit-transform-style: preserve-3d; touch-action: pan-y;"
              @touchstart="touchStart($event)"
              @touchmove="touchMove($event)"
              @touchend="touchEnd($event)"

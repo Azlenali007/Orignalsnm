@@ -56,6 +56,23 @@ $adminNavLinks = [
     <meta name="apple-mobile-web-app-title" content="SMM Panel">
     <link rel="apple-touch-icon" href="/assets/icons/icon-192.svg">
 
+    <!-- Immediate Theme Initialization (Zero FOUC) -->
+    <script>
+        (function() {
+            try {
+                var stored = localStorage.getItem('smm_theme');
+                var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+                if (stored === 'dark' || ((!stored || stored === 'system') && prefersDark)) {
+                    document.documentElement.classList.add('dark');
+                    document.documentElement.style.colorScheme = 'dark';
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    document.documentElement.style.colorScheme = 'light';
+                }
+            } catch(e) {}
+        })();
+    </script>
+
     <!-- Tailwind CSS (via CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Alpine.js (via CDN) -->
@@ -73,6 +90,7 @@ $adminNavLinks = [
 
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -97,6 +115,7 @@ $adminNavLinks = [
         .service-card {
             transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease;
             will-change: transform, box-shadow;
+            contain: layout style;
         }
         .service-card:hover {
             transform: translateY(-4px);
@@ -104,6 +123,228 @@ $adminNavLinks = [
         }
         .service-card:active {
             transform: translateY(-1px) scale(0.995);
+        }
+
+        /* GPU Compositor Hardware Acceleration for Lag Reduction */
+        header, nav, .backdrop-blur-md, .backdrop-blur-xl, .backdrop-blur-2xl {
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+        }
+        .ambient-glow-layer {
+            contain: strict;
+            transform: translate3d(0, 0, 0);
+            will-change: transform;
+        }
+
+        /* =========================================================================
+           PREMIUM DARK MODE DESIGN SYSTEM
+           Preserves shapes, sizes, layouts, and icons while adapting surfaces & text
+           ========================================================================= */
+        html.dark {
+            color-scheme: dark;
+            background-color: #0b0f19;
+        }
+        html.dark body {
+            background-color: #0b0f19 !important;
+            color: #f1f5f9 !important;
+        }
+        html.dark .bg-\[\#f8fafc\],
+        html.dark .bg-\[\#f6f9fc\] {
+            background-color: #0b0f19 !important;
+        }
+        html.dark .bg-\[\#0f172a\]\/\[0\.02\] {
+            background-color: #0b0f19 !important;
+        }
+
+        /* Glass Headers */
+        html.dark header.bg-white\/90,
+        html.dark header.bg-white {
+            background-color: rgba(15, 23, 42, 0.88) !important;
+            border-color: rgba(30, 41, 59, 0.8) !important;
+            box-shadow: 0 4px 25px -4px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        /* Floating Bottom Dock */
+        html.dark nav.bg-white\/90 {
+            background-color: rgba(15, 23, 42, 0.94) !important;
+            border-color: rgba(30, 41, 59, 0.9) !important;
+            box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.7) !important;
+        }
+        html.dark nav.bg-white\/90 a.text-slate-500 {
+            color: #94a3b8 !important;
+        }
+        html.dark nav.bg-white\/90 a.text-slate-500:hover {
+            color: #f8fafc !important;
+        }
+        html.dark nav.bg-white\/90 .bg-blue-50 {
+            background-color: rgba(37, 99, 235, 0.18) !important;
+            color: #60a5fa !important;
+        }
+
+        /* Card Surfaces & Containers */
+        html.dark .bg-white {
+            background-color: #111827 !important;
+            border-color: #1f293d !important;
+            color: #f1f5f9;
+        }
+        html.dark .bg-white\/90,
+        html.dark .bg-white\/80,
+        html.dark .bg-white\/60,
+        html.dark .bg-white\/95 {
+            background-color: rgba(17, 24, 39, 0.9) !important;
+            border-color: rgba(31, 41, 61, 0.85) !important;
+        }
+
+        /* Text Contrast Hierarchy */
+        html.dark .text-slate-900 { color: #f8fafc !important; }
+        html.dark .text-slate-800 { color: #f1f5f9 !important; }
+        html.dark .text-slate-700 { color: #e2e8f0 !important; }
+        html.dark .text-slate-600 { color: #cbd5e1 !important; }
+        html.dark .text-slate-500 { color: #94a3b8 !important; }
+        html.dark .text-slate-400 { color: #64748b !important; }
+
+        /* Borders, Dividers & Outlines */
+        html.dark .border-slate-100,
+        html.dark .border-slate-200,
+        html.dark .border-slate-200\/80,
+        html.dark .border-slate-200\/60,
+        html.dark .border-slate-200\/70,
+        html.dark .border-slate-200\/90 {
+            border-color: #1f293d !important;
+        }
+        html.dark .border-white,
+        html.dark .border-white\/90,
+        html.dark .border-white\/80,
+        html.dark .border-white\/60 {
+            border-color: #1f293d !important;
+        }
+        html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+        html.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+            border-color: #1f293d !important;
+        }
+
+        /* Inputs, Selects, Textareas */
+        html.dark input,
+        html.dark select,
+        html.dark textarea {
+            background-color: #0f172a !important;
+            border-color: #334155 !important;
+            color: #f8fafc !important;
+        }
+        html.dark input:focus,
+        html.dark select:focus,
+        html.dark textarea:focus {
+            border-color: #3b82f6 !important;
+            background-color: #111c33 !important;
+        }
+        html.dark input::placeholder,
+        html.dark textarea::placeholder {
+            color: #64748b !important;
+        }
+        html.dark input:disabled,
+        html.dark select:disabled,
+        html.dark textarea:disabled {
+            background-color: #1e293b !important;
+            color: #94a3b8 !important;
+            border-color: #334155 !important;
+        }
+        html.dark label {
+            color: #e2e8f0 !important;
+        }
+
+        /* Subtle Dark Fill Tints for Buttons, Tabs, Secondary Surfaces */
+        html.dark .bg-slate-50,
+        html.dark .bg-slate-50\/50,
+        html.dark .bg-slate-50\/80 {
+            background-color: #0f172a !important;
+        }
+        html.dark .bg-slate-100,
+        html.dark .bg-slate-100\/80,
+        html.dark .bg-slate-100\/90 {
+            background-color: #1e293b !important;
+        }
+        html.dark .hover\:bg-slate-50:hover {
+            background-color: #1e293b !important;
+        }
+        html.dark .hover\:bg-slate-100:hover,
+        html.dark .hover\:bg-slate-200:hover,
+        html.dark .hover\:bg-slate-200\/80:hover {
+            background-color: #334155 !important;
+        }
+
+        /* Icon Badge Backgrounds in Dark Mode (Maintain distinctive platform colors with deep contrast) */
+        html.dark .bg-pink-50 { background-color: rgba(236, 72, 153, 0.14) !important; border-color: rgba(236, 72, 153, 0.3) !important; }
+        html.dark .bg-blue-50 { background-color: rgba(59, 130, 246, 0.14) !important; border-color: rgba(59, 130, 246, 0.3) !important; }
+        html.dark .bg-purple-50 { background-color: rgba(168, 85, 247, 0.14) !important; border-color: rgba(168, 85, 247, 0.3) !important; }
+        html.dark .bg-teal-50 { background-color: rgba(20, 184, 166, 0.14) !important; border-color: rgba(20, 184, 166, 0.3) !important; }
+        html.dark .bg-emerald-50 { background-color: rgba(16, 185, 129, 0.14) !important; border-color: rgba(16, 185, 129, 0.3) !important; }
+        html.dark .bg-amber-50 { background-color: rgba(245, 158, 11, 0.14) !important; border-color: rgba(245, 158, 11, 0.3) !important; }
+        html.dark .bg-rose-50 { background-color: rgba(244, 63, 94, 0.14) !important; border-color: rgba(244, 63, 94, 0.3) !important; }
+        html.dark .bg-sky-50 { background-color: rgba(14, 165, 233, 0.14) !important; border-color: rgba(14, 165, 233, 0.3) !important; }
+        html.dark .bg-red-50 { background-color: rgba(239, 68, 68, 0.14) !important; border-color: rgba(239, 68, 68, 0.3) !important; }
+
+        /* Badges Text Contrast */
+        html.dark .text-emerald-600, html.dark .text-emerald-700, html.dark .text-emerald-800 { color: #34d399 !important; }
+        html.dark .text-amber-600, html.dark .text-amber-700, html.dark .text-amber-800 { color: #fbbf24 !important; }
+        html.dark .text-rose-600, html.dark .text-rose-700, html.dark .text-rose-800 { color: #fb7185 !important; }
+        html.dark .text-blue-600, html.dark .text-blue-700, html.dark .text-blue-800 { color: #60a5fa !important; }
+        html.dark .text-purple-600, html.dark .text-purple-700, html.dark .text-purple-800 { color: #c084fc !important; }
+        html.dark .text-pink-600, html.dark .text-pink-700, html.dark .text-pink-800 { color: #f472b6 !important; }
+        html.dark .text-teal-600, html.dark .text-teal-700, html.dark .text-teal-800 { color: #2dd4bf !important; }
+
+        /* Tables */
+        html.dark table thead th { background-color: #0f172a !important; color: #94a3b8 !important; border-color: #1f293d !important; }
+        html.dark table td { border-color: #1f293d !important; color: #cbd5e1 !important; }
+        html.dark table tbody tr { border-color: #1f293d !important; }
+        html.dark table tbody tr:hover { background-color: rgba(30, 41, 59, 0.35) !important; }
+
+        /* SweetAlert2 Popups in Dark Mode */
+        html.dark .swal2-popup {
+            background: #111827 !important;
+            color: #f8fafc !important;
+            border: 1px solid #1f293d !important;
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8) !important;
+        }
+        html.dark .swal2-title { color: #f8fafc !important; }
+        html.dark .swal2-html-container { color: #cbd5e1 !important; }
+        html.dark .swal2-validation-message { background: #1e293b !important; color: #fda4af !important; }
+        html.dark .swal2-toast { background: #111827 !important; color: #f8fafc !important; border: 1px solid #1f293d !important; }
+
+        /* Welcome Intro Dialog in Dark Mode */
+        html.dark #welcomeIntroCard {
+            background-color: rgba(17, 24, 39, 0.96) !important;
+            border-color: rgba(51, 65, 85, 0.8) !important;
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.85) !important;
+        }
+        html.dark #welcomeIntroCard h2 { color: #f8fafc !important; }
+        html.dark #welcomeIntroCard p { color: #94a3b8 !important; }
+        html.dark #welcomeIntroCard .bg-slate-100\/80 { background-color: rgba(30, 41, 59, 0.8) !important; color: #cbd5e1 !important; }
+
+        /* High-Contrast QR Code Wrapper in Dark Mode */
+        html.dark .qr-code-wrapper,
+        html.dark img[alt*="QR"] {
+            background-color: #ffffff !important;
+            padding: 8px !important;
+            border-radius: 14px !important;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4) !important;
+        }
+
+        /* Order Checkout Step 2 Charge Display in Dark Mode */
+        html.dark #chargeDisplay {
+            background-color: #064e3b !important;
+            border-color: #047857 !important;
+            color: #a7f3d0 !important;
+        }
+
+        /* Accessible Reduced-Motion Fallback */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
         }
     </style>
 </head>
