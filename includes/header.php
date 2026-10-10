@@ -15,9 +15,11 @@ check_maintenance_mode();
 
 $currentUser = Auth::user();
 $pageTitle = $pageTitle ?? (app_name() . ' - ' . app_tagline());
-$isAdminPage = str_starts_with($_SERVER['SCRIPT_NAME'] ?? '', '/admin');
-$isUserPage = str_starts_with($_SERVER['SCRIPT_NAME'] ?? '', '/user');
-$currentScript = $_SERVER['SCRIPT_NAME'] ?? '';
+$currentScript = $_SERVER['SCRIPT_NAME'] ?? ($_SERVER['PHP_SELF'] ?? '');
+$isAdminPage = str_starts_with($currentScript, '/admin');
+$isUserPage = str_starts_with($currentScript, '/user');
+$isServicesPage = str_contains($currentScript, 'services.php') || str_contains($_SERVER['REQUEST_URI'] ?? '', 'services.php');
+$showUserHeader = ($currentUser !== null) && ($isUserPage || $isServicesPage);
 
 $adminNavLinks = [
     ['name' => 'Dashboard', 'url' => '/admin/dashboard.php', 'icon' => '📊'],
@@ -206,7 +208,7 @@ $adminNavLinks = [
                 <main class="flex-1 overflow-y-auto">
                     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
                         <?= render_flash() ?>
-    <?php elseif (!$isUserPage): ?>
+    <?php elseif (!$showUserHeader): ?>
         <!-- Public Landing Page Header -->
         <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200/80">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -224,7 +226,7 @@ $adminNavLinks = [
                     </a>
                     <nav class="hidden md:flex items-center gap-6 text-sm font-semibold text-slate-600">
                         <a href="/" class="hover:text-blue-600 transition-colors">Home</a>
-                        <a href="/user/services.php" class="hover:text-blue-600 transition-colors">Services</a>
+                        <a href="/services.php" class="hover:text-blue-600 transition-colors <?= $isServicesPage ? 'text-blue-600 font-bold' : '' ?>">Services</a>
                         <a href="/login.php" class="hover:text-blue-600 transition-colors">How It Works</a>
                         <a href="/user/tickets.php" class="hover:text-blue-600 transition-colors">Support</a>
                     </nav>

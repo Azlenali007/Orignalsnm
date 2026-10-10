@@ -383,27 +383,27 @@ require_once __DIR__ . '/includes/header.php';
         <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">All Major Social Media Platforms</h2>
         
         <div class="mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-6 max-w-4xl mx-auto px-4">
-            <a href="/user/services.php?platform=instagram" class="flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs w-28 hover:shadow-md hover:-translate-y-1 transition-all">
+            <a href="/services.php?platform=instagram" class="flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs w-28 hover:shadow-md hover:-translate-y-1 transition-all">
                 <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-amber-500 via-rose-500 to-purple-600 flex items-center justify-center text-white text-xl font-bold shadow-md">IG</div>
                 <span class="text-xs font-semibold text-slate-700">Instagram</span>
             </a>
-            <a href="/user/services.php?platform=youtube" class="flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs w-28 hover:shadow-md hover:-translate-y-1 transition-all">
+            <a href="/services.php?platform=youtube" class="flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs w-28 hover:shadow-md hover:-translate-y-1 transition-all">
                 <div class="w-12 h-12 rounded-xl bg-red-600 flex items-center justify-center text-white text-xl font-bold shadow-md">YT</div>
                 <span class="text-xs font-semibold text-slate-700">YouTube</span>
             </a>
-            <a href="/user/services.php?platform=telegram" class="flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs w-28 hover:shadow-md hover:-translate-y-1 transition-all">
+            <a href="/services.php?platform=telegram" class="flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs w-28 hover:shadow-md hover:-translate-y-1 transition-all">
                 <div class="w-12 h-12 rounded-xl bg-sky-500 flex items-center justify-center text-white text-xl font-bold shadow-md">TG</div>
                 <span class="text-xs font-semibold text-slate-700">Telegram</span>
             </a>
-            <a href="/user/services.php?platform=facebook" class="flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs w-28 hover:shadow-md hover:-translate-y-1 transition-all">
+            <a href="/services.php?platform=facebook" class="flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs w-28 hover:shadow-md hover:-translate-y-1 transition-all">
                 <div class="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center text-white text-xl font-bold shadow-md">FB</div>
                 <span class="text-xs font-semibold text-slate-700">Facebook</span>
             </a>
-            <a href="/user/services.php?platform=tiktok" class="flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs w-28 hover:shadow-md hover:-translate-y-1 transition-all">
+            <a href="/services.php?platform=tiktok" class="flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs w-28 hover:shadow-md hover:-translate-y-1 transition-all">
                 <div class="w-12 h-12 rounded-xl bg-black flex items-center justify-center text-white text-xl font-bold shadow-md">TT</div>
                 <span class="text-xs font-semibold text-slate-700">TikTok</span>
             </a>
-            <a href="/user/services.php?platform=twitter" class="flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs w-28 hover:shadow-md hover:-translate-y-1 transition-all">
+            <a href="/services.php?platform=twitter" class="flex flex-col items-center gap-2 p-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs w-28 hover:shadow-md hover:-translate-y-1 transition-all">
                 <div class="w-12 h-12 rounded-xl bg-slate-900 flex items-center justify-center text-white text-xl font-bold shadow-md">X</div>
                 <span class="text-xs font-semibold text-slate-700">Twitter (X)</span>
             </a>

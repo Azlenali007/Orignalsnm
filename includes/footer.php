@@ -6,9 +6,12 @@
 
 declare(strict_types=1);
 
-$isAdminPage = str_starts_with($_SERVER['SCRIPT_NAME'] ?? '', '/admin');
-$isUserPage = str_starts_with($_SERVER['SCRIPT_NAME'] ?? '', '/user');
-$currentScript = $_SERVER['SCRIPT_NAME'] ?? '';
+$currentScript = $_SERVER['SCRIPT_NAME'] ?? ($_SERVER['PHP_SELF'] ?? '');
+$isAdminPage = str_starts_with($currentScript, '/admin');
+$isUserPage = str_starts_with($currentScript, '/user');
+$currentUser = Auth::user();
+$isServicesPage = str_contains($currentScript, 'services.php') || str_contains($_SERVER['REQUEST_URI'] ?? '', 'services.php');
+$showUserDock = ($currentUser !== null) && ($isUserPage || $isServicesPage);
 ?>
         </div>
     </main>
@@ -22,7 +25,7 @@ $currentScript = $_SERVER['SCRIPT_NAME'] ?? '';
         </div>
     </div>
 
-    <?php elseif ($isUserPage): ?>
+    <?php elseif ($showUserDock): ?>
         <!-- User Floating Glass Bottom Dock (Dashboard, Services, New Order, Orders, Profile) -->
         <!-- Fixed to viewport with floating island layout, blur backdrop and safe-area padding -->
         <nav class="fixed bottom-3 sm:bottom-4 left-3 right-3 max-w-lg mx-auto z-40 bg-white/90 backdrop-blur-2xl border border-white/90 shadow-[0_20px_50px_-10px_rgba(15,23,42,0.2)] rounded-3xl p-1.5 transition-all" 
@@ -102,7 +105,7 @@ $currentScript = $_SERVER['SCRIPT_NAME'] ?? '';
                 </div>
                 <div class="flex items-center gap-6">
                     <a href="/install/" class="text-blue-600 hover:underline font-semibold">Web Installer</a>
-                    <a href="/user/services.php" class="hover:text-slate-900 transition-colors">Services</a>
+                    <a href="/services.php" class="hover:text-slate-900 transition-colors">Services</a>
                     <a href="/user/tickets.php" class="hover:text-slate-900 transition-colors">Support</a>
                 </div>
             </div>
@@ -111,7 +114,7 @@ $currentScript = $_SERVER['SCRIPT_NAME'] ?? '';
 
     <!-- Application JavaScript Core -->
     <script src="/assets/js/app.js"></script>
-    <?php if ($isUserPage): ?>
+    <?php if ($isUserPage || $isServicesPage): ?>
         <script src="/assets/js/user.js"></script>
     <?php endif; ?>
     <?php if ($isAdminPage): ?>
