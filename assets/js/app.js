@@ -43,9 +43,78 @@ window.notify = {
         }
         return window.confirm(message);
     }
+// Global Premium Theme Manager (Zero-reload, persistent, system-aware)
+window.ThemeManager = {
+    get: function() {
+        return localStorage.getItem('smm_theme') || 'system';
+    },
+    set: function(theme) {
+        if (!['light', 'dark', 'system'].includes(theme)) return;
+        localStorage.setItem('smm_theme', theme);
+        this.apply();
+        this.syncUI();
+        window.dispatchEvent(new CustomEvent('themechanged', {
+            detail: { theme: theme, isDark: document.documentElement.classList.contains('dark') }
+        }));
+    },
+    apply: function() {
+        var pref = this.get();
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var isDark = pref === 'dark' || (pref === 'system' && prefersDark);
+        
+        if (isDark) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.style.colorScheme = 'dark';
+            var metaDark = document.querySelector('meta[name="theme-color"]');
+            if (metaDark) metaDark.setAttribute('content', '#0b0f19');
+        } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.style.colorScheme = 'light';
+            var metaLight = document.querySelector('meta[name="theme-color"]');
+            if (metaLight) metaLight.setAttribute('content', '#2563eb');
+        }
+    },
+    syncUI: function() {
+        var current = this.get();
+        document.querySelectorAll('[data-theme-option]').forEach(function(el) {
+            var val = el.getAttribute('data-theme-option');
+            var isSelected = (val === current);
+            el.setAttribute('aria-checked', isSelected ? 'true' : 'false');
+            
+            // Visual active indicator classes
+            var checkIndicator = el.querySelector('.theme-check-icon');
+            if (checkIndicator) {
+                checkIndicator.classList.toggle('hidden', !isSelected);
+            }
+            var activeRing = el.querySelector('.theme-active-ring');
+            if (activeRing) {
+                activeRing.classList.toggle('border-blue-600', isSelected);
+                activeRing.classList.toggle('dark:border-blue-500', isSelected);
+                activeRing.classList.toggle('border-transparent', !isSelected);
+                activeRing.classList.toggle('ring-2', isSelected);
+                activeRing.classList.toggle('ring-blue-500/30', isSelected);
+            }
+        });
+    },
+    init: function() {
+        this.apply();
+        var self = this;
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
+                if (self.get() === 'system') {
+                    self.apply();
+                    self.syncUI();
+                }
+            });
+        }
+    }
 };
 
+// Initialize Theme Manager immediately
+window.ThemeManager.init();
+
 document.addEventListener('DOMContentLoaded', () => {
+    window.ThemeManager.syncUI();
     // Dismiss flash alert notifications
     const closeBtns = document.querySelectorAll('[role="alert"] button');
     closeBtns.forEach(btn => {

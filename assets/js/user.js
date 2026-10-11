@@ -62,6 +62,17 @@ function cardCarousel(initialItems) {
             action: 'Open →'
         },
         {
+            id: 'spin-win',
+            title: 'Spin & Win',
+            subtitle: 'Spin the wheel for instant cash & jackpots',
+            badge: 'Instant Rewards',
+            icon: '🎡',
+            bgClass: 'from-purple-600 via-indigo-600 to-pink-600',
+            glow: 'rgba(168, 85, 247, 0.55)',
+            link: '/user/spin.php',
+            action: 'Spin Now →'
+        },
+        {
             id: 'refer-earn',
             title: 'Refer & Earn',
             subtitle: 'Invite friends & earn lifetime commissions',

@@ -70,6 +70,76 @@ require_once __DIR__ . '/../includes/header.php';
 
     <?= render_flash() ?>
 
+    <!-- Interface Appearance & Theme Switcher (Zero Reload) -->
+    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-sm space-y-4">
+        <div class="border-b border-slate-100 pb-4 flex items-center justify-between">
+            <div>
+                <h2 class="text-base font-extrabold text-slate-900 flex items-center gap-2">
+                    <span class="w-8 h-8 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-sm font-bold">🌓</span>
+                    Interface Appearance &amp; Theme
+                </h2>
+                <p class="text-xs text-slate-400 mt-0.5">Choose your preferred visual theme. Updates instantly across your session without page reload.</p>
+            </div>
+            <span class="text-[11px] font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-200/60">Real-Time Sync</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1" role="radiogroup" aria-label="Theme selection">
+            <!-- Light Mode Button -->
+            <button type="button" 
+                    data-theme-option="light"
+                    onclick="window.ThemeManager.set('light')"
+                    class="theme-card relative p-3.5 rounded-2xl border bg-slate-50 border-slate-200 text-left transition-all hover:border-blue-400 focus:outline-none cursor-pointer flex flex-col justify-between"
+                    role="radio"
+                    aria-checked="false">
+                <div class="theme-active-ring absolute inset-0 rounded-2xl border-transparent pointer-events-none transition-all"></div>
+                <div class="flex items-center justify-between">
+                    <span class="text-xl">☀️</span>
+                    <span class="theme-check-icon hidden text-blue-600 font-black text-xs">✓ Active</span>
+                </div>
+                <div class="mt-2.5">
+                    <span class="text-xs font-black text-slate-800 block">Light Mode</span>
+                    <span class="text-[11px] text-slate-400 font-medium block">Crisp daylight interface</span>
+                </div>
+            </button>
+
+            <!-- Dark Mode Button -->
+            <button type="button" 
+                    data-theme-option="dark"
+                    onclick="window.ThemeManager.set('dark')"
+                    class="theme-card relative p-3.5 rounded-2xl border bg-slate-50 border-slate-200 text-left transition-all hover:border-blue-400 focus:outline-none cursor-pointer flex flex-col justify-between"
+                    role="radio"
+                    aria-checked="false">
+                <div class="theme-active-ring absolute inset-0 rounded-2xl border-transparent pointer-events-none transition-all"></div>
+                <div class="flex items-center justify-between">
+                    <span class="text-xl">🌙</span>
+                    <span class="theme-check-icon hidden text-blue-600 font-black text-xs">✓ Active</span>
+                </div>
+                <div class="mt-2.5">
+                    <span class="text-xs font-black text-slate-800 block">Dark Mode</span>
+                    <span class="text-[11px] text-slate-400 font-medium block">Deep slate night interface</span>
+                </div>
+            </button>
+
+            <!-- System Default Button -->
+            <button type="button" 
+                    data-theme-option="system"
+                    onclick="window.ThemeManager.set('system')"
+                    class="theme-card relative p-3.5 rounded-2xl border bg-slate-50 border-slate-200 text-left transition-all hover:border-blue-400 focus:outline-none cursor-pointer flex flex-col justify-between"
+                    role="radio"
+                    aria-checked="false">
+                <div class="theme-active-ring absolute inset-0 rounded-2xl border-transparent pointer-events-none transition-all"></div>
+                <div class="flex items-center justify-between">
+                    <span class="text-xl">💻</span>
+                    <span class="theme-check-icon hidden text-blue-600 font-black text-xs">✓ Active</span>
+                </div>
+                <div class="mt-2.5">
+                    <span class="text-xs font-black text-slate-800 block">System Default</span>
+                    <span class="text-[11px] text-slate-400 font-medium block">Follow device setting</span>
+                </div>
+            </button>
+        </div>
+    </div>
+
     <form action="/admin/settings.php" method="POST" class="space-y-6">
         <?= CSRF::field() ?>
 

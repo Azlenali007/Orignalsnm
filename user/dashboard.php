@@ -113,7 +113,22 @@ $carouselCards[] = [
     'action' => 'Open →'
 ];
 
-// 6. Refer & Earn (if enabled in Admin)
+// 6. Spin & Win (Instant Cash & Jackpot rewards)
+if (SpinWheelEngine::isEnabled()) {
+    $carouselCards[] = [
+        'id' => 'spin-win',
+        'title' => 'Spin & Win',
+        'subtitle' => 'Spin the wheel for instant cash & jackpots',
+        'badge' => 'Instant Rewards',
+        'icon' => '🎡',
+        'bgClass' => 'from-purple-600 via-indigo-600 to-pink-600',
+        'glow' => 'rgba(168, 85, 247, 0.55)',
+        'link' => '/user/spin.php',
+        'action' => 'Spin Now →'
+    ];
+}
+
+// 7. Refer & Earn (if enabled in Admin)
 if (get_setting('referral_enabled', '1') === '1') {
     $carouselCards[] = [
         'id' => 'refer-earn',
@@ -233,7 +248,14 @@ require_once __DIR__ . '/../includes/header.php';
                             </svg>
                         </template>
 
-                        <!-- 5. Refer & Earn Gift/Reward Icon -->
+                        <!-- 5. Spin & Win Wheel Icon -->
+                        <template x-if="item.id === 'spin-win'">
+                            <svg class="w-7 h-7 sm:w-8 sm:h-8 text-white drop-shadow-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </template>
+
+                        <!-- 6. Refer & Earn Gift/Reward Icon -->
                         <template x-if="item.id === 'refer-earn'">
                             <svg class="w-7 h-7 sm:w-8 sm:h-8 text-white drop-shadow-xs" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V6a2 2 0 10-2 2h2zm0 0H4m8 0h8m-16 5h16M4 13a2 2 0 00-2 2v4a2 2 0 002 2h16a2 2 0 002-2v-4a2 2 0 00-2-2H4z" />
