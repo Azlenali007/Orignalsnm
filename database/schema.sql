@@ -5,6 +5,11 @@
 
 SET FOREIGN_KEY_CHECKS = 0;
 
+DROP TABLE IF EXISTS `spin_wheel_audit_logs`;
+DROP TABLE IF EXISTS `spin_spins`;
+DROP TABLE IF EXISTS `spin_wheel_config_versions`;
+DROP TABLE IF EXISTS `spin_wheel_outcomes`;
+DROP TABLE IF EXISTS `spin_wheel_bets`;
 DROP TABLE IF EXISTS `update_audit_logs`;
 DROP TABLE IF EXISTS `migrations`;
 DROP TABLE IF EXISTS `user_notification_reads`;
@@ -423,6 +428,8 @@ INSERT INTO `tickets` (`id`, `user_id`, `order_id`, `subject`, `status`, `priori
 -- Default Announcements (Shows modern popup on User Dashboard)
 INSERT INTO `announcements` (`id`, `title`, `type`, `badge_text`, `message`, `btn_text`, `btn_link`, `target_audience`, `show_once`, `status`) VALUES
 (1, 'Welcome to SMM Panel! Join Our Official Telegram Channel', 'telegram', 'Official Telegram', 'Get instant order updates, exclusive flash discount codes, and priority support in our official Telegram community. Join thousands of active creators today!', 'Join Telegram Channel', 'https://t.me/smmpanelofficial', 'all', 1, 'active'),
+(2, '⚡ Special Offer: 10% Extra Balance on All UPI & Crypto Deposits', 'offer', 'Special Offer', 'Top up your account balance today and automatically receive an extra 10% bonus credit on all instant UPI and USDT deposits over ₹500.', 'Add Funds Now', '/user/add-funds.php', 'all', 1, 'inactive');
+
 -- 14. SPIN WHEEL TABLES
 CREATE TABLE IF NOT EXISTS `spin_wheel_bets` (
   `id` INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,

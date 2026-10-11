@@ -73,7 +73,17 @@ class SpinWheelEngine {
                 $migFile = APP_ROOT . '/database/migrations/005_spin_wheel_system.sql';
                 if (file_exists($migFile)) {
                     $sql = file_get_contents($migFile);
-                    $db->exec($sql);
+                    $statements = split_sql_statements($sql);
+                    foreach ($statements as $stmt) {
+                        if (trim($stmt) !== '') {
+                            try {
+                                $db->exec($stmt);
+                            } catch (\Throwable $se) {
+                                // Ignore benign "already exists" or duplicate column errors
+                                error_log("SpinWheelEngine migration notice: " . $se->getMessage());
+                            }
+                        }
+                    }
                 }
             }
         } catch (\Throwable $e) {

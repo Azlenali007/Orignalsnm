@@ -969,4 +969,93 @@ function get_unread_notifications_count(int $userId): int {
     }
 }
 
+/**
+ * =====================================================================
+ * SQL MIGRATION & INSTALLER STATEMENT PARSER
+ * Safely parses and splits complex SQL scripts into individual valid
+ * statements, respecting quotes, escaped characters, and comments.
+ * =====================================================================
+ */
+function split_sql_statements(string $sql): array {
+    $statements = [];
+    $current = '';
+    $len = strlen($sql);
+    $inSingleQuote = false;
+    $inDoubleQuote = false;
+    $inBacktick = false;
+    $inLineComment = false;
+    $inBlockComment = false;
+
+    for ($i = 0; $i < $len; $i++) {
+        $c = $sql[$i];
+        $next = ($i + 1 < $len) ? $sql[$i + 1] : '';
+
+        // Handle line comments: -- or #
+        if ($inLineComment) {
+            if ($c === "\n" || $c === "\r") {
+                $inLineComment = false;
+            }
+            continue;
+        }
+
+        // Handle block comments: /* ... */
+        if ($inBlockComment) {
+            if ($c === '*' && $next === '/') {
+                $inBlockComment = false;
+                $i++;
+            }
+            continue;
+        }
+
+        // Check for comment starts if outside string literals
+        if (!$inSingleQuote && !$inDoubleQuote && !$inBacktick) {
+            if (($c === '-' && $next === '-') || $c === '#') {
+                $inLineComment = true;
+                if ($c === '-') $i++;
+                continue;
+            }
+            if ($c === '/' && $next === '*') {
+                $inBlockComment = true;
+                $i++;
+                continue;
+            }
+        }
+
+        // Handle string literals and identifiers
+        if ($c === "'" && !$inDoubleQuote && !$inBacktick) {
+            // Check for escaped quote \'
+            $escaped = ($i > 0 && $sql[$i - 1] === '\\');
+            if (!$escaped) {
+                $inSingleQuote = !$inSingleQuote;
+            }
+        } elseif ($c === '"' && !$inSingleQuote && !$inBacktick) {
+            $escaped = ($i > 0 && $sql[$i - 1] === '\\');
+            if (!$escaped) {
+                $inDoubleQuote = !$inDoubleQuote;
+            }
+        } elseif ($c === '`' && !$inSingleQuote && !$inDoubleQuote) {
+            $inBacktick = !$inBacktick;
+        }
+
+        // Check for statement delimiter ';' outside strings
+        if ($c === ';' && !$inSingleQuote && !$inDoubleQuote && !$inBacktick) {
+            $trimmed = trim($current);
+            if ($trimmed !== '') {
+                $statements[] = $trimmed;
+            }
+            $current = '';
+            continue;
+        }
+
+        $current .= $c;
+    }
+
+    $trimmed = trim($current);
+    if ($trimmed !== '') {
+        $statements[] = $trimmed;
+    }
+
+    return $statements;
+}
+
 

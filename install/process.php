@@ -87,7 +87,15 @@ try {
         throw new Exception("Database schema file not found at database/schema.sql");
     }
     $schemaSql = file_get_contents($schemaFile);
-    $pdo->exec($schemaSql);
+
+    // Require functions for split_sql_statements
+    require_once dirname(__DIR__) . '/includes/functions.php';
+    $statements = split_sql_statements($schemaSql);
+    foreach ($statements as $stmt) {
+        if (trim($stmt) !== '') {
+            $pdo->exec($stmt);
+        }
+    }
 
     // 3. Create or update Administrator Account
     $hashedPassword = password_hash($adminPassword, PASSWORD_DEFAULT);
